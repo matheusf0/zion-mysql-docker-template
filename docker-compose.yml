@@ -1,0 +1,35 @@
+version: "3.7"
+
+services:
+  mysql:
+    image: mysql:8.0.19
+    networks:
+      - vlan_database
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_HOST: localhost
+      MYSQL_PORT: 3306
+    volumes:
+      - ~/.docker-storage/mysql8019/data:/var/lib/mysql
+    container_name: mysql
+    ports: 
+      - 3306
+    restart: always
+  
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:5.0.2
+    container_name: phpmyadmin-5.0.2
+    networks:
+      - vlan_database
+    ports:
+      - "9002:80"
+    environment:
+      PMA_HOST: mysql
+    depends_on:
+      - mysql
+
+
+networks:
+  vlan_database:
+          
